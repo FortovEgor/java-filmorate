@@ -1,13 +1,11 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @Builder
 public class User {
     private int id;
@@ -17,4 +15,26 @@ public class User {
     private String login;
     private String name;
     private LocalDate birthday;
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        User other = (User) obj;
+        return id == other.id;
+    }
 }
+
+
+
+
+

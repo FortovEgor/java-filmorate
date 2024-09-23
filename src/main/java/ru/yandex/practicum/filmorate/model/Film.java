@@ -2,14 +2,13 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.*;
 
-import java.time.Duration;
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  * Film.
  */
-@Data
+@Getter
+@Setter
 @Builder
 public class Film {
     private int id;
@@ -18,4 +17,21 @@ public class Film {
     private String description;
     private LocalDate releaseDate;
     private Integer duration;
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Film other = (Film) obj;
+        return id == other.id;
+    }
 }

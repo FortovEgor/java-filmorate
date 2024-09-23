@@ -7,16 +7,16 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @RestController
 @RequestMapping("users")
 public class UserController {
     private int generatorId = 0;
-    private Map<Integer, User> users = new HashMap<>();
+    private Map<Integer, User> users = new ConcurrentHashMap<>();
 
     @GetMapping
     public final List<User> findAll() {
@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User create(@RequestBody User user) {
+    public User create(@RequestBody User user) throws ValidationException {
         if (users.containsValue(user)) {
             throw new ValidationException("Такой пользователь уже существует.");
         }
@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @PutMapping
-    public User update(@RequestBody User user) {
+    public User update(@RequestBody User user) throws ValidationException {
         int id = user.getId();
         if (!users.containsKey(id)) {
             log.debug("Пользователь не найден.");
@@ -48,7 +48,7 @@ public class UserController {
         return user;
     }
 
-    public final void validateUser(User user) {
+    public final void validateUser(User user) throws ValidationException {
         if (user.getEmail().isBlank() || !user.getEmail().contains("@")) {
             throw new ValidationException("Электронная почта не может быть пустой и должна содержать символ @.");
         }

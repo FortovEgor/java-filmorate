@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import io.micrometer.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -24,7 +25,7 @@ public class FilmController {
     }
 
     @PostMapping
-    public Film create(@RequestBody Film film) {
+    public Film create(@RequestBody Film film) throws ValidationException {
         if (films.containsKey(film.getId())) {
             log.debug("Фильм " + film.getName() + " уже существует");
             throw new ValidationException("Такой фильм уже есть. Поменяйте id.");
@@ -38,7 +39,7 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film put(@RequestBody Film film) {
+    public Film put(@RequestBody Film film) throws ValidationException {
         if (!films.containsKey(film.getId())) {
             log.debug("Фильм " + film.getName() + " не найден.");
             throw new ValidationException("Такого фильма нет. Создайте новый.");
@@ -48,8 +49,8 @@ public class FilmController {
         return film;
     }
 
-    public final void validateFilm(Film film) {
-        if (film.getName().isBlank()) {
+    public final void validateFilm(Film film) throws ValidationException {
+        if (StringUtils.isBlank(film.getName())) {
             throw new ValidationException("Название фильма не может быть пустым.");
         }
         if (film.getDescription().length() > 200) {
