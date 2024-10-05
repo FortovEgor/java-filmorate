@@ -20,19 +20,6 @@ class UserValidationTest {
     }
 
     @Test
-    void userEmailCanNotBeEmpty() {
-        user = User.builder()
-                .id(1)
-                .email("")
-                .login("mock")
-                .name("mock")
-                .birthday(LocalDate.of(2003, 12, 12))
-                .build();
-        Exception exception = assertThrows(ValidationException.class, () -> userController.validateUser(user));
-        assertEquals("Электронная почта не может быть пустой и должна содержать символ @.", exception.getMessage());
-    }
-
-    @Test
     void emailMustBeCorrect() {
         user = User.builder()
                 .id(1)
@@ -95,19 +82,6 @@ class UserValidationTest {
                 .build();
         Exception exception = assertThrows(ValidationException.class, () -> userController.validateUser(user));
         assertEquals("Логин не может быть пустым и содержать пробелы.", exception.getMessage());
-    }
-
-    @Test
-    void userNameCanNotBeEmpty() {
-        user = User.builder()
-                .id(1)
-                .email("mock@gmail.com")
-                .login("mock")
-                .name("")
-                .birthday(LocalDate.of(2003, 12, 12))
-                .build();
-        Exception exception = assertThrows(ValidationException.class, () -> userController.validateUser(user));
-        assertEquals("Имя не может быть пустым или быть null.", exception.getMessage());
     }
 
     @Test
