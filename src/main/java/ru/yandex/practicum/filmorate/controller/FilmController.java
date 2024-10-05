@@ -26,6 +26,7 @@ public class FilmController {
 
     @PostMapping
     public Film create(@RequestBody Film film) throws ValidationException {
+        validateFilm(film);
         if (films.containsKey(film.getId())) {
             log.debug("Фильм " + film.getName() + " уже существует");
             throw new ValidationException("Такой фильм уже есть. Поменяйте id.");
@@ -44,13 +45,14 @@ public class FilmController {
             log.debug("Фильм " + film.getName() + " не найден.");
             throw new ValidationException("Такого фильма нет. Создайте новый.");
         }
+        validateFilm(film);
         films.put((long) film.getId(), film);
         log.debug("Фильм " + film.getName() + " обновлен.");
         return film;
     }
 
     public final void validateFilm(Film film) throws ValidationException {
-        if (StringUtils.isBlank(film.getName())) {
+        if (film.getName().isBlank()) {
             throw new ValidationException("Название фильма не может быть пустым.");
         }
         if (film.getDescription().length() > 200) {
