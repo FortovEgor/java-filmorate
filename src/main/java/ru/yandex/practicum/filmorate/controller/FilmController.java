@@ -40,11 +40,10 @@ public class FilmController {
 
     @PutMapping
     public Film put(@RequestBody Film film) throws ValidationException {
-        if (!films.containsKey(film.getId())) {
+        if (!films.containsKey((long) film.getId())) {
             log.debug("Фильм " + film.getName() + " не найден.");
             throw new ValidationException("Такого фильма нет. Создайте новый.");
         }
-        validateFilm(film);
         films.put((long) film.getId(), film);
         log.debug("Фильм " + film.getName() + " обновлен.");
         return film;
