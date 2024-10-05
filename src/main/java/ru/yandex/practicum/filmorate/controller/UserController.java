@@ -29,6 +29,9 @@ public class UserController {
             throw new ValidationException("Такой пользователь уже существует.");
         }
         validateUser(user);
+        if (user.getName() == null || user.getName().isBlank()) {
+            user.setName(user.getLogin());
+        }
         user.setId(++generatorId);
         users.put(user.getId(), user);
         log.debug("Пользователь {} создан.", user.getLogin());
@@ -55,9 +58,9 @@ public class UserController {
         if (user.getLogin().isBlank() || user.getLogin().matches(".*\\s+.*")) {
             throw new ValidationException("Логин не может быть пустым и содержать пробелы.");
         }
-        if (user.getName() == null || user.getName().isBlank()) {
-            throw new ValidationException("Имя не может быть пустым или быть null.");
-        }
+//        if (user.getName() == null || user.getName().isBlank()) {  // в таком случае будет использован ЛОГИН
+//            throw new ValidationException("Имя не может быть пустым или быть null.");
+//        }
         if (user.getBirthday().isAfter(LocalDate.now())) {
             throw new ValidationException("Дата рождения не может быть в будущем.");
         }
