@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class UserService {  // добавление в друзья, удаление из друзей, вывод списка общих друзей.
-    private UserStorage userStorage;
+    private final UserStorage userStorage;
 
     @Autowired
     public UserService(UserStorage userStorage) {
@@ -84,9 +84,5 @@ public class UserService {  // добавление в друзья, удале�
         if (user <= 0 || friend <= 0) {
             throw new NotValidIdException();
         }
-    }
-
-    public void setStorage(UserStorage userStorage) {
-        this.userStorage = userStorage;
     }
 }

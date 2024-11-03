@@ -21,7 +21,6 @@ public class UserController {
     @Autowired
     public UserController(UserService userService, UserStorage userStorage) {
         this.userService = userService;
-        this.userService.setStorage(userStorage);
         this.userStorage = userStorage;
     }
 

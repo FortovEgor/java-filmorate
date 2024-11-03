@@ -21,7 +21,6 @@ public class FilmController {
     @Autowired
     public FilmController(FilmService filmService, FilmStorage filmStorage) {
         this.filmService = filmService;
-        this.filmService.setStorage(filmStorage);
         this.filmStorage = filmStorage;
     }
 
