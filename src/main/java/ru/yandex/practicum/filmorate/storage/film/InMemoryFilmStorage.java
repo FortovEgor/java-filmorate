@@ -14,7 +14,6 @@ import java.util.Map;
 @Component
 @Slf4j
 public class InMemoryFilmStorage implements FilmStorage {
-    // @TODO: get rid of mocks below
     private final Map<Long, Film> films = new HashMap<>();
     private int currentId = 0;
     @Override

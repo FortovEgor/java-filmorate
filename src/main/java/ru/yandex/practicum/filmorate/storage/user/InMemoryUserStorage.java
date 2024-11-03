@@ -17,7 +17,6 @@ public class InMemoryUserStorage implements UserStorage {
     private int generatorId = 0;
     private Map<Integer, User> users = new ConcurrentHashMap<>();
 
-    // @TODO: get rid of mocks below
     @Override
     public User create(User user) throws ValidationException {
         if (users.containsValue(user)) {
