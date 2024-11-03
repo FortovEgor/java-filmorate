@@ -23,7 +23,7 @@ class UserValidationTest {
     @BeforeEach
     void setUp() {
         UserStorage userStorage = new InMemoryUserStorage();
-        UserService userService = new UserService();
+        UserService userService = new UserService(userStorage);
         userController = new UserController(userService, userStorage);
     }
 
