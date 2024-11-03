@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,19 +15,29 @@ import java.util.Map;
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<?> methodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ResponseEntity<?> validationException(ValidationException e) {
         Map<String, String> errors = new HashMap<>();
-        e.getBindingResult().getAllErrors()
-                .forEach((error) -> {
-                    FieldError fieldError = ((FieldError) error);
-                    String fieldName = fieldError.getField();
-                    String errorMessage = error.getDefaultMessage();
-                    errors.put(fieldName, errorMessage);
+        errors.put("Validation error", e.getMessage());
 
-                    log.error(errorMessage + " " + fieldError.getRejectedValue(), fieldName);
-                });
-        return ResponseEntity.badRequest().body(errors);
+        log.error(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
+
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public ResponseEntity<?> methodArgumentNotValidException(MethodArgumentNotValidException e) {
+//        Map<String, String> errors = new HashMap<>();
+//        e.getBindingResult().getAllErrors()
+//                .forEach((error) -> {
+//                    FieldError fieldError = ((FieldError) error);
+//                    String fieldName = fieldError.getField();
+//                    String errorMessage = error.getDefaultMessage();
+//                    errors.put(fieldName, errorMessage);
+//
+//                    log.error(errorMessage + " " + fieldError.getRejectedValue(), fieldName);
+//                });
+//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errors);
+//    }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> notFoundException(NotFoundException e) {
@@ -35,7 +46,7 @@ public class ControllerExceptionHandler {
 
         log.error(e.getStackTrace()[0].getMethodName() + ": " + e.getMessage());
 
-        return ResponseEntity.status(404).body(errors);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errors);
     }
 
     @ExceptionHandler(NotValidIdException.class)
@@ -45,6 +56,17 @@ public class ControllerExceptionHandler {
 
         log.error(e.getStackTrace()[0].getMethodName() + ": " + e.getMessage());
 
-        return ResponseEntity.status(404).body(errors);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errors);
+    }
+
+    // Обработка всех остальных исключений
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleAllExceptions(Exception e) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("Internal exception occured", e.getMessage());
+
+        log.error(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errors);
     }
 }
