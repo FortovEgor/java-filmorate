@@ -25,7 +25,7 @@ public class FilmController {
 
     @PostMapping
     public Film create(@RequestBody Film film) throws ValidationException {
-        validateFilm(film);
+        validateFilm(film);  // валидация остается в контроллере
         if (films.containsKey(film.getId())) {
             log.debug("Фильм " + film.getName() + " уже существует");
             throw new ValidationException("Такой фильм уже есть. Поменяйте id.");
