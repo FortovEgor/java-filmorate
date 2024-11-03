@@ -11,6 +11,8 @@ public interface FilmStorage {
     Film create(Film film) throws ValidationException;
     Film update(Film film) throws ValidationException;
     void remove(int id);
+    Film get(Integer id);
+
     Collection<Film> findAll();
 
     HashMap<Long, Film> getFilms();

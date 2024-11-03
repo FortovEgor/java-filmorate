@@ -2,6 +2,9 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import java.time.LocalDate;
 
 /**
@@ -10,6 +13,8 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Film {
     private int id;
     @NonNull
@@ -17,6 +22,7 @@ public class Film {
     private String description;
     private LocalDate releaseDate;
     private Integer duration;
+    private Set<Integer> idUsersWhoLikedFilm = new HashSet<>();
 
     @Override
     public int hashCode() {
@@ -33,5 +39,9 @@ public class Film {
         }
         Film other = (Film) obj;
         return id == other.id;
+    }
+
+    public static Integer getFilmsLikes(Film film) {
+        return film.getIdUsersWhoLikedFilm().size();
     }
 }

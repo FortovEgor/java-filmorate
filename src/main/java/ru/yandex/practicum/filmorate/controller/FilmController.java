@@ -42,4 +42,24 @@ public class FilmController {
     public final void validateFilm(Film film) throws ValidationException {
         filmStorage.validateFilm(film);
     }
+
+    @GetMapping("/{id}")
+    public Film getFilm(@PathVariable Integer id) {
+        return filmStorage.get(id);
+    }
+
+    @PutMapping("/{id}/like/{userId}")
+    public void addLike(@PathVariable Integer filmId, @PathVariable Integer userId) {
+        filmService.addLike(filmId, userId);
+    }
+
+    @DeleteMapping("/{id}/like/{userId}")
+    public void removeLike(@PathVariable Integer filmId, @PathVariable Integer userId) {
+        filmService.removeLike(filmId, userId);
+    }
+
+    @GetMapping("/popular")
+    public List<Film> getTopPopular(@RequestParam(defaultValue = "10", required = false) Integer count) {
+        return filmService.getTopFilmsByLikes(count);
+    }
 }
