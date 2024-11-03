@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class UserService {  // добавление в друзья, удаление из друзей, вывод списка общих друзей.
-    private final UserStorage userStorage;
+    private UserStorage userStorage;
 
     @Autowired
     public UserService(UserStorage userStorage) {
@@ -73,7 +73,8 @@ public class UserService {  // добавление в друзья, удале�
             throw new NotValidIdException();
         }
         if (!userStorage.getUsers().containsKey(id)) {
-            throw new NotFoundException("Пользователь с запрашиваемым id не зарегестрирован.");
+            throw new NotFoundException(String.format("Пользователь с запрашиваемым id=%d не зарегестрирован." +
+                    " Кол-во пользователей: %d", id, userStorage.findAll().size()));
         }
         log.debug("Найден пользователь c id {}.", id);
         return userStorage.getUsers().get(id);
@@ -83,5 +84,9 @@ public class UserService {  // добавление в друзья, удале�
         if (user <= 0 || friend <= 0) {
             throw new NotValidIdException();
         }
+    }
+
+    public void setStorage(UserStorage userStorage) {
+        this.userStorage = userStorage;
     }
 }

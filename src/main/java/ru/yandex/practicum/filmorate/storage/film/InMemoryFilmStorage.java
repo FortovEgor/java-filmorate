@@ -59,8 +59,8 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public HashMap<Long, Film> getFilms() {  // @FIXME: unused?
-        return new HashMap<>();
+    public Map<Long, Film> getFilms() {  // @FIXME: unused?
+        return films;
     }
 
     @Override

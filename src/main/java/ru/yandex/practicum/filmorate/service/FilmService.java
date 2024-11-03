@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class FilmService {  // добавление и удаление лайка, вывод 10 наиболее популярных фильмов по количеству лайков.
-    private final FilmStorage filmStorage;
+    private FilmStorage filmStorage;
 
     @Autowired
     public FilmService(FilmStorage filmStorage) {
@@ -63,5 +63,9 @@ public class FilmService {  // добавление и удаление лайк
         if (filmId <= 0 || userId <= 0) {
             throw new NotValidIdException();
         }
+    }
+
+    public void setStorage(FilmStorage storage) {
+        this.filmStorage = filmStorage;
     }
 }

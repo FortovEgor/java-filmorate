@@ -21,6 +21,7 @@ public class FilmController {
     @Autowired
     public FilmController(FilmService filmService, FilmStorage filmStorage) {
         this.filmService = filmService;
+        this.filmService.setStorage(filmStorage);
         this.filmStorage = filmStorage;
     }
 
@@ -49,13 +50,13 @@ public class FilmController {
     }
 
     @PutMapping("/{id}/like/{userId}")
-    public void addLike(@PathVariable Integer filmId, @PathVariable Integer userId) {
-        filmService.addLike(filmId, userId);
+    public void addLike(@PathVariable Integer id, @PathVariable Integer userId) {
+        filmService.addLike(id, userId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
-    public void removeLike(@PathVariable Integer filmId, @PathVariable Integer userId) {
-        filmService.removeLike(filmId, userId);
+    public void removeLike(@PathVariable Integer id, @PathVariable Integer userId) {
+        filmService.removeLike(id, userId);
     }
 
     @GetMapping("/popular")

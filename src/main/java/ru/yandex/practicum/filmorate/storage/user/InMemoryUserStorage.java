@@ -57,9 +57,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public Map<Integer, User> getUsers() {  // @FIXME: unused?
-        return new ConcurrentHashMap<>();
-    }
+    public Map<Integer, User> getUsers() { return users; }
 
     @Override
     public final void validateUser(User user) throws ValidationException {

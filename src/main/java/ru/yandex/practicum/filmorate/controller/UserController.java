@@ -21,6 +21,7 @@ public class UserController {
     @Autowired
     public UserController(UserService userService, UserStorage userStorage) {
         this.userService = userService;
+        this.userService.setStorage(userStorage);
         this.userStorage = userStorage;
     }
 
@@ -44,22 +45,22 @@ public class UserController {
     }
 
     @PutMapping("/{id}/friends/{friendId}")
-    public void addFriend(@PathVariable Integer userId, @PathVariable Integer friendId) {
-        userService.addFriend(userId, friendId);
+    public void addFriend(@PathVariable Integer id, @PathVariable Integer friendId) {
+        userService.addFriend(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
-    public void deleteFriend(@PathVariable Integer userId, @PathVariable Integer friendId) {
-        userService.removeFriend(userId, friendId);
+    public void deleteFriend(@PathVariable Integer id, @PathVariable Integer friendId) {
+        userService.removeFriend(id, friendId);
     }
 
     @GetMapping("/{id}/friends")
-    public List<User> getFriendList(@PathVariable Integer userId) {
-        return userService.getUserFriends(userId);
+    public List<User> getFriendList(@PathVariable Integer id) {
+        return userService.getUserFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}") //список друзей, общих с другим пользователем
-    public List<User> getCommonFriends(@PathVariable Integer userId, @PathVariable Integer otherUserId) {
-        return userService.getCommonFriends(userId, otherUserId);
+    public List<User> getCommonFriends(@PathVariable Integer id, @PathVariable Integer otherUserId) {
+        return userService.getCommonFriends(id, otherUserId);
     }
 }

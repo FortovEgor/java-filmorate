@@ -4,7 +4,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Map;
 
 public interface FilmStorage {
     // методы добавления, удаления и модификации объектов
@@ -15,6 +15,6 @@ public interface FilmStorage {
 
     Collection<Film> findAll();
 
-    HashMap<Long, Film> getFilms();
+    Map<Long, Film> getFilms();
     void validateFilm(Film film) throws ValidationException;
 }
