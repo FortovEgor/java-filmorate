@@ -15,13 +15,13 @@ import java.util.*;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    private final FilmStorage filmStorage;
     private final FilmService filmService;
+    private final FilmStorage filmStorage;
 
     @Autowired
-    public FilmController(FilmStorage filmStorage, FilmService filmService) {
-        this.filmStorage = filmStorage;
+    public FilmController(FilmService filmService, FilmStorage filmStorage) {
         this.filmService = filmService;
+        this.filmStorage = filmStorage;
     }
 
     @GetMapping

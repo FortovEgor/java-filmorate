@@ -58,6 +58,7 @@ public class InMemoryFilmStorage implements FilmStorage {
         return new HashMap<>();
     }
 
+    @Override
     public final void validateFilm(Film film) throws ValidationException {
         if (film.getName().isBlank()) {
             throw new ValidationException("Название фильма не может быть пустым.");

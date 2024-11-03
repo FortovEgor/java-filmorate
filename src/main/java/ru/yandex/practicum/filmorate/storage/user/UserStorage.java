@@ -13,4 +13,5 @@ public interface UserStorage {
     void remove(int id);
     Collection<User> findAll();
     Map<Integer, User> getUsers();
+    void validateUser(User user) throws ValidationException;
 }

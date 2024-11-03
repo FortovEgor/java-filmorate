@@ -61,7 +61,8 @@ public class InMemoryUserStorage implements UserStorage {
         return new ConcurrentHashMap<>();
     }
 
-    private final void validateUser(User user) throws ValidationException {
+    @Override
+    public final void validateUser(User user) throws ValidationException {
         if (user.getEmail().isBlank() || !user.getEmail().contains("@")) {
             throw new ValidationException("Электронная почта не может быть пустой и должна содержать символ @.");
         }
