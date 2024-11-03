@@ -14,4 +14,5 @@ public interface FilmStorage {
     Collection<Film> findAll();
 
     HashMap<Long, Film> getFilms();
+    void validateFilm(Film film) throws ValidationException;
 }
