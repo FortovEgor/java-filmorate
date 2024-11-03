@@ -4,19 +4,17 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-/**
- * Film.
- */
 @Getter
 @Setter
 @Builder
-public class Film {
+public class User {
     private int id;
     @NonNull
+    private String email;
+    @NonNull
+    private String login;
     private String name;
-    private String description;
-    private LocalDate releaseDate;
-    private Integer duration;
+    private LocalDate birthday;
 
     @Override
     public int hashCode() {
@@ -31,7 +29,12 @@ public class Film {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        Film other = (Film) obj;
+        User other = (User) obj;
         return id == other.id;
     }
 }
+
+
+
+
+
