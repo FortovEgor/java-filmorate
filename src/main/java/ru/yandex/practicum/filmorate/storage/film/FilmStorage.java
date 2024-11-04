@@ -9,12 +9,16 @@ import java.util.Map;
 public interface FilmStorage {
     // методы добавления, удаления и модификации объектов
     Film create(Film film) throws ValidationException;
+
     Film update(Film film) throws ValidationException;
+
     void remove(int id);
+
     Film get(Integer id);
 
     Collection<Film> findAll();
 
     Map<Long, Film> getFilms();
+
     void validateFilm(Film film) throws ValidationException;
 }
