@@ -53,8 +53,9 @@ public class FilmService {  // добавление и удаление лайк
             throw new NotValidIdException();
         }
         if (!filmStorage.getFilms().containsKey(id)) {
-            throw new NotFoundException(String.format("Фильм с запрашиваемым id=%d отсутствует. Кол-во фильмов: %d",
-                    id, filmStorage.getFilms().get(0).getId()));
+            throw new NotFoundException(String.format("Фильм с запрашиваемым id=%d отсутствует. Кол-во фильмов: %s",
+                    id, filmStorage.getFilms().keySet().stream().map(String::valueOf) // Преобразуем Long ключи в строки
+                            .collect(Collectors.joining(", "))));
         }
         log.debug("Получен фильм с айди {}.", id);
         return filmStorage.getFilms().get(id);
