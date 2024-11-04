@@ -3,10 +3,12 @@ package ru.yandex.practicum.filmorate.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.util.*;
 
@@ -18,9 +20,13 @@ public class FilmController {
     private final FilmStorage filmStorage;
 
     @Autowired
-    public FilmController(FilmService filmService, FilmStorage filmStorage) {
+    private final UserStorage userStorage;
+
+    @Autowired
+    public FilmController(FilmService filmService, FilmStorage filmStorage, UserStorage userStorage) {
         this.filmService = filmService;
         this.filmStorage = filmStorage;
+        this.userStorage = userStorage;
     }
 
     @GetMapping
@@ -49,6 +55,9 @@ public class FilmController {
 
     @PutMapping("/{id}/like/{userId}")
     public void addLike(@PathVariable Integer id, @PathVariable Integer userId) {
+        if (!userStorage.getUsers().containsKey(userId)) {
+            throw new NotFoundException(String.format("User with id=%dno found", userId));
+        }
         filmService.addLike(id, userId);
     }
 
