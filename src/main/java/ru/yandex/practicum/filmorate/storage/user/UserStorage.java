@@ -9,9 +9,14 @@ import java.util.Map;
 public interface UserStorage {
     // методы добавления, удаления и модификации объектов
     User create(User user) throws ValidationException;
+
     User update(User user) throws ValidationException;
+
     void remove(int id);
+
     Collection<User> findAll();
+
     Map<Integer, User> getUsers();
+
     void validateUser(User user) throws ValidationException;
 }
