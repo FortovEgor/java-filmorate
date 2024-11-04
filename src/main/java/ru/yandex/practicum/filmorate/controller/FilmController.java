@@ -63,6 +63,10 @@ public class FilmController {
 
     @DeleteMapping("/{id}/like/{userId}")
     public void removeLike(@PathVariable Integer id, @PathVariable Integer userId) {
+        if (!userStorage.getUsers().containsKey(userId)) {
+            throw new NotFoundException(String.format("User with id=%dno found", userId));
+        }
+
         filmService.removeLike(id, userId);
     }
 
