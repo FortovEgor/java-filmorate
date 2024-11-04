@@ -53,7 +53,8 @@ public class FilmService {  // добавление и удаление лайк
             throw new NotValidIdException();
         }
         if (!filmStorage.getFilms().containsKey(id)) {
-            throw new NotFoundException("Фильм с запрашиваемым id отсутствует.");
+            throw new NotFoundException(String.format("Фильм с запрашиваемым id=%d отсутствует. Кол-во фильмов: %d",
+                    id, filmStorage.getFilms().get(0).getId()));
         }
         log.debug("Получен фильм с айди {}.", id);
         return filmStorage.getFilms().get(id);
