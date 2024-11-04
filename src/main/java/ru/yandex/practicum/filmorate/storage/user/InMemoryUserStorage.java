@@ -57,7 +57,9 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public Map<Integer, User> getUsers() { return users; }
+    public Map<Integer, User> getUsers() {
+        return users;
+    }
 
     @Override
     public final void validateUser(User user) throws ValidationException {
@@ -67,9 +69,6 @@ public class InMemoryUserStorage implements UserStorage {
         if (user.getLogin().isBlank() || user.getLogin().matches(".*\\s+.*")) {
             throw new ValidationException("Логин не может быть пустым и содержать пробелы.");
         }
-//        if (user.getName() == null || user.getName().isBlank()) {  // в таком случае будет использован ЛОГИН
-//            throw new ValidationException("Имя не может быть пустым или быть null.");
-//        }
         if (user.getBirthday().isAfter(LocalDate.now())) {
             throw new ValidationException("Дата рождения не может быть в будущем.");
         }
