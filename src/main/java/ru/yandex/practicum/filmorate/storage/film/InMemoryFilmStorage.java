@@ -35,7 +35,7 @@ public class InMemoryFilmStorage implements FilmStorage {
 
     @Override
     public Film update(Film film) throws ValidationException {
-        if (!films.containsKey((long) film.getId())) {
+        if (!films.containsKey(film.getId())) {
             log.debug("Фильм " + film.getName() + " не найден.");
             throw new NotFoundException("Такого фильма нет. Создайте новый.");
         }
