@@ -22,21 +22,6 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
     }
 
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    public ResponseEntity<?> methodArgumentNotValidException(MethodArgumentNotValidException e) {
-//        Map<String, String> errors = new HashMap<>();
-//        e.getBindingResult().getAllErrors()
-//                .forEach((error) -> {
-//                    FieldError fieldError = ((FieldError) error);
-//                    String fieldName = fieldError.getField();
-//                    String errorMessage = error.getDefaultMessage();
-//                    errors.put(fieldName, errorMessage);
-//
-//                    log.error(errorMessage + " " + fieldError.getRejectedValue(), fieldName);
-//                });
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errors);
-//    }
-
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<?> notFoundException(NotFoundException e) {
         Map<String, String> errors = new HashMap<>();
