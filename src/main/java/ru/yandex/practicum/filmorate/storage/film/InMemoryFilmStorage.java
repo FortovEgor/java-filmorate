@@ -17,6 +17,7 @@ import java.util.Map;
 public class InMemoryFilmStorage implements FilmStorage {
     private final Map<Long, Film> films = new HashMap<>();
     private int currentId = 0;
+
     @Override
     public Film create(Film film) throws ValidationException {
         validateFilm(film);
