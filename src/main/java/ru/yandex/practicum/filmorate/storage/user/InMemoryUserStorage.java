@@ -29,7 +29,7 @@ public class InMemoryUserStorage implements UserStorage {
         }
         user.setId(++generatorId);
         users.put(user.getId(), user);
-        log.debug("Пользователь {} создан.", user.getLogin());
+        log.info("Пользователь {} создан.", user.getLogin());
         return user;
     }
 
