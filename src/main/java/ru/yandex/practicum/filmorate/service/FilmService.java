@@ -42,10 +42,7 @@ public class FilmService {  // добавление и удаление лайк
             throw new NotFoundException("Список фильмов пуст.");
         }
         log.debug("Топ {} фильмов успешно отобран.", count);
-        return filmStorage.findAll().stream()
-                .sorted(Comparator.comparing(Film::getFilmsLikes).reversed())
-                .limit(count)
-                .collect(Collectors.toList());
+        return filmStorage.getTopFilms(count);
     }
 
     public Film findFilmById(Integer id) {

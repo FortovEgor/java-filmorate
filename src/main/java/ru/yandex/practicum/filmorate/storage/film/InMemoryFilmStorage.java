@@ -7,10 +7,8 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 @Slf4j
@@ -80,7 +78,17 @@ public class InMemoryFilmStorage implements FilmStorage {
         }
     }
 
+    @Override
     public boolean isEmpty() {
         return films.isEmpty();
+    }
+
+    @Override
+    public List<Film> getTopFilms(int count) {
+        var films = new ArrayList<>(this.films.values());
+        return films.stream()
+                .sorted(Comparator.comparing(Film::getFilmsLikes).reversed())
+                .limit(count)
+                .collect(Collectors.toList());
     }
 }

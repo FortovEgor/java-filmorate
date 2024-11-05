@@ -55,7 +55,7 @@ public class UserController {
 
     @GetMapping("/{id}/friends")
     public List<User> getFriendList(@PathVariable Integer id) {
-        return userService.getUserFriends(id);
+        return userService.getUserStorage().getUserFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}") //список друзей, общих с другим пользователем
