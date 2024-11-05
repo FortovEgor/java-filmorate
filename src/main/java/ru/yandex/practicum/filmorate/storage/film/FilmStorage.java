@@ -21,4 +21,6 @@ public interface FilmStorage {
     Map<Integer, Film> getFilms();
 
     void validateFilm(Film film) throws ValidationException;
+
+    public boolean isEmpty();
 }

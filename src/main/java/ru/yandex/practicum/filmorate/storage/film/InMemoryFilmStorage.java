@@ -79,4 +79,8 @@ public class InMemoryFilmStorage implements FilmStorage {
             throw new ValidationException("Продолжительность фильма должна быть положительным числом.");
         }
     }
+
+    public boolean isEmpty() {
+        return films.isEmpty();
+    }
 }

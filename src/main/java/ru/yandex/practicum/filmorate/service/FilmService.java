@@ -38,7 +38,7 @@ public class FilmService {  // добавление и удаление лайк
     }
 
     public List<Film> getTopFilmsByLikes(Integer count) {
-        if (filmStorage.findAll().isEmpty()) {
+        if (filmStorage.isEmpty()) {
             throw new NotFoundException("Список фильмов пуст.");
         }
         log.debug("Топ {} фильмов успешно отобран.", count);
