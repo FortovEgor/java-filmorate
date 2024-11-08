@@ -7,6 +7,7 @@ import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.NotValidIdException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,19 +16,27 @@ import java.util.stream.Collectors;
 @Service
 public class FilmService {  // добавление и удаление лайка, вывод 10 наиболее популярных фильмов по количеству лайков.
     private final FilmStorage filmStorage;
+    private final UserStorage userStorage;
 
     @Autowired
-    public FilmService(FilmStorage filmStorage) {
+    public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
         this.filmStorage = filmStorage;
+        this.userStorage = userStorage;
     }
 
     public void addLike(Integer filmId, Integer userId) {
+        if (!userStorage.getUsers().containsKey(userId)) {
+            throw new NotFoundException(String.format("User with id=%dno found", userId));
+        }
         checkId(filmId, userId);
         findFilmById(filmId).getIdUsersWhoLikedFilm().add(userId);
         log.debug("Пользователь c id {} поставил лайк фильму с айди {}.", userId, filmId);
     }
 
     public void removeLike(Integer filmId, Integer userId) {
+        if (!userStorage.getUsers().containsKey(userId)) {
+            throw new NotFoundException(String.format("User with id=%dno found", userId));
+        }
         checkId(filmId, userId);
         if (findFilmById(filmId).getIdUsersWhoLikedFilm().isEmpty()) {
             throw new NotFoundException("Список фильмов пуст.");

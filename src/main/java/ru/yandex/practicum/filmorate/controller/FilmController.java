@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,19 +16,11 @@ import java.util.*;
 @Slf4j
 @RestController
 @RequestMapping("/films")
+@RequiredArgsConstructor
 public class FilmController {
     private final FilmService filmService;
     private final FilmStorage filmStorage;
-
-    @Autowired
     private final UserStorage userStorage;
-
-    @Autowired
-    public FilmController(FilmService filmService, FilmStorage filmStorage, UserStorage userStorage) {
-        this.filmService = filmService;
-        this.filmStorage = filmStorage;
-        this.userStorage = userStorage;
-    }
 
     @GetMapping
     public final Collection<Film> findAll() {
@@ -55,18 +48,11 @@ public class FilmController {
 
     @PutMapping("/{id}/like/{userId}")
     public void addLike(@PathVariable Integer id, @PathVariable Integer userId) {
-        if (!userStorage.getUsers().containsKey(userId)) {
-            throw new NotFoundException(String.format("User with id=%dno found", userId));
-        }
         filmService.addLike(id, userId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
     public void removeLike(@PathVariable Integer id, @PathVariable Integer userId) {
-        if (!userStorage.getUsers().containsKey(userId)) {
-            throw new NotFoundException(String.format("User with id=%dno found", userId));
-        }
-
         filmService.removeLike(id, userId);
     }
 

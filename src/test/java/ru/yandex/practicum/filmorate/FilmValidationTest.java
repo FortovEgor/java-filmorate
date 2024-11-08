@@ -22,8 +22,8 @@ class FilmValidationTest {
     @BeforeEach
     void setUp() {
         FilmStorage filmStorage = new InMemoryFilmStorage();
-        FilmService filmService = new FilmService(filmStorage);
         UserStorage userStorage = new InMemoryUserStorage();
+        FilmService filmService = new FilmService(filmStorage, userStorage);
         filmController = new FilmController(filmService, filmStorage, userStorage);
     }
 
