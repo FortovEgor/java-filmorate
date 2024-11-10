@@ -17,11 +17,9 @@ public interface FilmStorage {
 
     Film get(Integer id);
 
-    Collection<Film> findAll();
+    Collection<Film> getAll();
 
     Map<Integer, Film> getFilms();
-
-    void validateFilm(Film film) throws ValidationException;
 
     boolean isEmpty();
 

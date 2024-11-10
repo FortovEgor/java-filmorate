@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.NotValidIdException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
+import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 @Slf4j
@@ -20,6 +23,32 @@ public class UserService {  // добавление в друзья, удале�
     @Autowired
     public UserService(UserStorage userStorage) {
         this.userStorage = userStorage;
+    }
+
+    public final Collection<User> getAllUsers() {
+        return userStorage.getAll();
+    }
+
+    public User createUser(User user) throws ValidationException {
+        validateUser(user);
+        return userStorage.create(user);
+    }
+
+    public User updateUser(User user) throws ValidationException {
+        validateUser(user);
+        return userStorage.update(user);
+    }
+
+    public final void validateUser(User user) throws ValidationException {
+        if (user.getEmail().isBlank() || !user.getEmail().contains("@")) {
+            throw new ValidationException("Электронная почта не может быть пустой и должна содержать символ @.");
+        }
+        if (user.getLogin().isBlank() || user.getLogin().matches(".*\\s+.*")) {
+            throw new ValidationException("Логин не может быть пустым и содержать пробелы.");
+        }
+        if (user.getBirthday().isAfter(LocalDate.now())) {
+            throw new ValidationException("Дата рождения не может быть в будущем.");
+        }
     }
 
     public void addFriend(Integer user, Integer friend) {

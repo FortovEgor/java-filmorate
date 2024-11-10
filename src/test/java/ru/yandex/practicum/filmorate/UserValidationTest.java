@@ -21,7 +21,7 @@ class UserValidationTest {
     void setUp() {
         UserStorage userStorage = new InMemoryUserStorage();
         UserService userService = new UserService(userStorage);
-        userController = new UserController(userService, userStorage);
+        userController = new UserController(userService);
     }
 
     @Test

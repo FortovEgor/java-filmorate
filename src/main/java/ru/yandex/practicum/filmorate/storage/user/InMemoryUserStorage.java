@@ -7,7 +7,6 @@ import ru.yandex.practicum.filmorate.exception.NotValidIdException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -23,7 +22,6 @@ public class InMemoryUserStorage implements UserStorage {
         if (users.containsValue(user)) {
             throw new ValidationException("Такой пользователь уже существует.");
         }
-        validateUser(user);
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
@@ -40,7 +38,6 @@ public class InMemoryUserStorage implements UserStorage {
             log.debug("Пользователь не найден.");
             throw new NotFoundException("Пользователь не найден.");
         }
-        validateUser(user);
         users.put(id, user);
         log.debug("Пользователь {} обновлен.", user.getLogin());
         return user;
@@ -52,26 +49,13 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public Collection<User> findAll() {
+    public Collection<User> getAll() {
         return new ArrayList<>(users.values());
     }
 
     @Override
     public Map<Integer, User> getUsers() {
         return users;
-    }
-
-    @Override
-    public final void validateUser(User user) throws ValidationException {
-        if (user.getEmail().isBlank() || !user.getEmail().contains("@")) {
-            throw new ValidationException("Электронная почта не может быть пустой и должна содержать символ @.");
-        }
-        if (user.getLogin().isBlank() || user.getLogin().matches(".*\\s+.*")) {
-            throw new ValidationException("Логин не может быть пустым и содержать пробелы.");
-        }
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            throw new ValidationException("Дата рождения не может быть в будущем.");
-        }
     }
 
     public List<User> getCommonFriends(Integer user, Integer friend) {
