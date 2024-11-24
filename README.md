@@ -1,7 +1,7 @@
 # java-filmorate
 Template repository for Filmorate project.
 
-Database schema from this project:
+## Database schema from this project
 
 ![sql_schema](https://github.com/FortovEgor/java-filmorate/blob/main/sql_schema.png)
 
