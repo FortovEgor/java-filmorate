@@ -1,4 +1,4 @@
 # java-filmorate
 Template repository for Filmorate project.
 
-![Uploading image.png…]()
+![sql_schema](https://github.com/FortovEgor/java-filmorate/blob/main/sql_schema.png)
