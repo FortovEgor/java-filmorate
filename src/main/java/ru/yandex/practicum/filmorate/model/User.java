@@ -3,10 +3,14 @@ package ru.yandex.practicum.filmorate.model;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     private int id;
     @NonNull
@@ -32,6 +36,8 @@ public class User {
         User other = (User) obj;
         return id == other.id;
     }
+
+    private Set<Integer> friends = new HashSet<>();
 }
 
 
