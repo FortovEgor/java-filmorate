@@ -1,4 +1,12 @@
-CREATE TABLE IF NOT EXISTS "films" (
+DROP TABLE IF EXISTS films CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS mpa_ratings CASCADE;
+DROP TABLE IF EXISTS films_genres CASCADE;
+DROP TABLE IF EXISTS genres CASCADE;
+DROP TABLE IF EXISTS likes CASCADE;
+DROP TABLE IF EXISTS friends CASCADE;
+
+CREATE TABLE IF NOT EXISTS films (
                          "id" integer PRIMARY KEY,
                          "name" varchar(100) NOT NULL,
                          "description" varchar(2000),
@@ -15,26 +23,26 @@ CREATE TABLE IF NOT EXISTS "users" (
                          "birthday" date
 );
 
-CREATE TABLE IF NOT EXISTS "mpa_ratings" (
-                               "id" integer PRIMARY KEY,
-                               "name" varchar(20) NOT NULL
+CREATE TABLE IF NOT EXISTS mpa_ratings (
+                               id integer PRIMARY KEY,
+                               name varchar(20) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS "films_genres" (
-                                "film_id" integer,
-                                "genre_id" integer,
-                                PRIMARY KEY ("film_id", "genre_id")
+CREATE TABLE IF NOT EXISTS films_genres (
+                                film_id integer,
+                                genre_id integer,
+                                PRIMARY KEY (film_id, genre_id)
 );
 
-CREATE TABLE IF NOT EXISTS "genres" (
-                          "id" integer PRIMARY KEY,
-                          "name" varchar(20) NOT NULL
+CREATE TABLE IF NOT EXISTS genres (
+                          id integer PRIMARY KEY,
+                          name varchar(20) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS "likes" (
-                         "film_id" integer,
-                         "user_id" integer,
-                         PRIMARY KEY ("film_id", "user_id")
+CREATE TABLE IF NOT EXISTS likes (
+                         film_id integer,
+                         user_id integer,
+                         PRIMARY KEY (film_id, user_id)
 );
 
 CREATE TABLE IF NOT EXISTS "friends" (
