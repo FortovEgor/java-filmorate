@@ -13,9 +13,7 @@ public interface FilmStorage {
 
     Film update(Film film) throws ValidationException;
 
-    void remove(int id);
-
-    Film get(Integer id);
+    Film get(int id);
 
     Collection<Film> getAll();
 
