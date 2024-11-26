@@ -46,9 +46,14 @@ public class UserController {
         userService.removeFriend(id, friendId);
     }
 
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable Integer id) {
+        return userService.findUserById(id);
+    }
+
     @GetMapping("/{id}/friends")
     public List<User> getFriendList(@PathVariable Integer id) {
-        return userService.getUserStorage().getUserFriends(id);
+        return userService.findAllFriends(id);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}") //список друзей, общих с другим пользователем

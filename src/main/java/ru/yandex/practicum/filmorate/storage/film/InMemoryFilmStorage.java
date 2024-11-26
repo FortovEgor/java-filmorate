@@ -9,7 +9,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
+//@Component  // @TODO: uncomment this for Spring to use this Impl
 @Slf4j
 public class InMemoryFilmStorage implements FilmStorage {
     private final Map<Integer, Film> films = new HashMap<>();
@@ -64,7 +64,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     public List<Film> getTopFilms(int count) {
         var films = new ArrayList<>(this.films.values());
         return films.stream()
-                .sorted(Comparator.comparing(Film::getFilmsLikes).reversed())
+//                .sorted(Comparator.comparing(Film::getFilmsLikes).reversed())
                 .limit(count)
                 .collect(Collectors.toList());
     }

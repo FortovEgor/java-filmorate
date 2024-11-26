@@ -4,11 +4,11 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Genre {
     @NonNull
-    Integer id;
-//    @NotBlank
-    String name;
+    private Integer id;
+    private String name;
 }

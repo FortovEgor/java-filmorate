@@ -1,28 +1,45 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.NotValidIdException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.FriendStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserService {  // добавление в друзья, удаление из друзей, вывод списка общих друзей.
-    @Getter
     private final UserStorage userStorage;
+    private final FriendStorage friendStorage;
 
-    @Autowired
-    public UserService(UserStorage userStorage) {
-        this.userStorage = userStorage;
+    public User findUserById(Integer id) {
+        if (id <= 0) {
+            throw new NotValidIdException();
+        }
+        if (!userStorage.getUsers().containsKey(id)) {
+            throw new NotFoundException(String.format("Фильм с запрашиваемым id=%d отсутствует. Кол-во фильмов: %s",
+                    id, userStorage.getUsers().keySet().stream().map(String::valueOf) // Преобразуем Long ключи в строки
+                            .collect(Collectors.joining(", "))));
+        }
+        log.debug("Получен фильм с айди {}.", id);
+        return userStorage.getUsers().get(id);
+    }
+
+    public List<User> findAllFriends(int id) {
+        return friendStorage.findAllFriends(id);
     }
 
     public final Collection<User> getAllUsers() {
@@ -52,23 +69,31 @@ public class UserService {  // добавление в друзья, удале�
     }
 
     public void addFriend(Integer user, Integer friend) {
+        if (userStorage.findUserById(user) == null || userStorage.findUserById(friend) == null) {
+            throw new NotFoundException("Пользователь не найден.");
+        }
         checkId(user, friend);
-        userStorage.findUserById(user).getFriends().add(friend);
-        userStorage.findUserById(friend).getFriends().add(user);
+        friendStorage.addFriend(user, friend);
         log.debug("Пользатели c id {} и {} друзья.", user, friend);
     }
 
     public void removeFriend(Integer user, Integer friend) {
         checkId(user, friend);
-        if (userStorage.getUserFriends(user).isEmpty()) {
-            log.debug("Список друзей пользователя c id {}  пуст.", user);
-            return;
+//        if (userStorage.getUserFriends(user).isEmpty()) {
+//            log.debug("Список друзей пользователя c id {}  пуст.", user);
+//            return;
+//        }
+//        if (!userStorage.findUserById(user).getFriends().contains(friend)) {
+//            throw new NotFoundException(userStorage.findUserById(friend));
+//        }
+//        userStorage.findUserById(user).getFriends().remove(friend);
+//        userStorage.findUserById(friend).getFriends().remove(user);
+
+
+        if (userStorage.findUserById(user) == null || userStorage.findUserById(friend) == null) {
+            throw new NotFoundException("Пользователь не найден.");
         }
-        if (!userStorage.findUserById(user).getFriends().contains(friend)) {
-            throw new NotFoundException(userStorage.findUserById(friend));
-        }
-        userStorage.findUserById(user).getFriends().remove(friend);
-        userStorage.findUserById(friend).getFriends().remove(user);
+        friendStorage.removeFriend(user, friend);
         log.debug("Пользатели c id {} и {} удалены из друзей друг друга.", user, friend);
     }
 

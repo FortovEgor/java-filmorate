@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-@Component
+//@Component  // @TODO: uncomment this for Spring to use this Impl
 @Slf4j
 public class InMemoryUserStorage implements UserStorage {
     private int generatorId = 0;
@@ -69,7 +69,8 @@ public class InMemoryUserStorage implements UserStorage {
         if (id <= 0) {
             throw new NotValidIdException();
         }
-        Set<Integer> users = findUserById(id).getFriends();
+//        Set<Integer> users = findUserById(id).getFriends();  // @TODO: handle new code architecture
+        Set<Integer> users = new HashSet<>();
         List<User> usersFriends = new ArrayList<>();
 
         if (!users.isEmpty()) {
@@ -82,7 +83,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User findUserById(Integer id) {
+    public User findUserById(int id) {
         if (id <= 0) {
             throw new NotValidIdException();
         }

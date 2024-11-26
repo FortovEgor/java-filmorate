@@ -1,12 +1,19 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.NotValidIdException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.MpaRating;
+import ru.yandex.practicum.filmorate.storage.GenreStorage;
+import ru.yandex.practicum.filmorate.storage.LikeStorage;
+import ru.yandex.practicum.filmorate.storage.MpaRatingStorage;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
@@ -17,15 +24,13 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class FilmService {  // добавление и удаление лайка, вывод 10 наиболее популярных фильмов по количеству лайков.
     private final FilmStorage filmStorage;
+    private final MpaRatingStorage mpaStorage;
+    private final GenreStorage genreStorage;
+    private final LikeStorage likeStorage;
     private final UserStorage userStorage;
-
-    @Autowired
-    public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
-        this.filmStorage = filmStorage;
-        this.userStorage = userStorage;
-    }
 
     public Collection<Film> getAllFilms() {
         return filmStorage.getAll();
@@ -64,8 +69,17 @@ public class FilmService {  // добавление и удаление лайк
             throw new NotFoundException(String.format("User with id=%dno found", userId));
         }
         checkId(filmId, userId);
-        findFilmById(filmId).getIdUsersWhoLikedFilm().add(userId);
-        log.debug("Пользователь c id {} поставил лайк фильму с айди {}.", userId, filmId);
+        likeStorage.addLike(filmId, userId);
+//        findFilmById(filmId).getIdUsersWhoLikedFilm().add(userId);
+//        log.debug("Пользователь c id {} поставил лайк фильму с айди {}.", userId, filmId);
+    }
+
+    public List<Genre> findAllGenres() {
+        return genreStorage.findAllGenres();
+    }
+
+    public Genre findGenreById(int id) {
+        return genreStorage.findGenreById(id).orElseThrow(() -> new RuntimeException("Жанр не найден."));
     }
 
     public void removeLike(Integer filmId, Integer userId) {
@@ -73,11 +87,12 @@ public class FilmService {  // добавление и удаление лайк
             throw new NotFoundException(String.format("User with id=%dno found", userId));
         }
         checkId(filmId, userId);
-        if (findFilmById(filmId).getIdUsersWhoLikedFilm().isEmpty()) {
-            throw new NotFoundException("Список фильмов пуст.");
-        }
-        findFilmById(filmId).getIdUsersWhoLikedFilm().remove(userId);
-        log.debug("Пользователь c id {} удалил лайк фильму с айди {}.", userId, filmId);
+        likeStorage.removeLike(filmId, userId);
+//        if (findFilmById(filmId).getIdUsersWhoLikedFilm().isEmpty()) {
+//            throw new NotFoundException("Список фильмов пуст.");
+//        }
+//        findFilmById(filmId).getIdUsersWhoLikedFilm().remove(userId);
+//        log.debug("Пользователь c id {} удалил лайк фильму с айди {}.", userId, filmId);
     }
 
     public List<Film> getTopFilmsByLikes(Integer count) {
@@ -86,6 +101,14 @@ public class FilmService {  // добавление и удаление лайк
         }
         log.debug("Топ {} фильмов успешно отобран.", count);
         return filmStorage.getTopFilms(count);
+    }
+
+    public List<MpaRating> findAllMpa() {
+        return mpaStorage.findAllMpa();
+    }
+
+    public MpaRating findMpaById(int id) {
+        return mpaStorage.findMpaById(id).orElseThrow(() -> new RuntimeException("Рейтинг MPA не найден."));
     }
 
     public Film findFilmById(Integer id) {

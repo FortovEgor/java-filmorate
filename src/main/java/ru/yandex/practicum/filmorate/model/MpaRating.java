@@ -4,6 +4,7 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class MpaRating {

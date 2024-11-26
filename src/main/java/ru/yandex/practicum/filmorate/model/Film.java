@@ -1,10 +1,12 @@
 package ru.yandex.practicum.filmorate.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.Set;
 
 import java.time.LocalDate;
 
@@ -13,20 +15,24 @@ import java.time.LocalDate;
  */
 @Getter
 @Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Film {
     private int id;
-    @NonNull
+    @NotBlank(message = "Введите название фильма.")
     private String name;
+    @NotNull
+    @Size(max = 200, message = "Слишком длинное описание.")
     private String description;
+    @NotNull
     private LocalDate releaseDate;
+    @Positive(message = "Продолжительность фильма должна быть больше 0.")
     private Integer duration;
     @NonNull
     private MpaRating mpa;
     private final LinkedHashSet<Genre> genres = new LinkedHashSet<>();
-    private Set<Integer> idUsersWhoLikedFilm = new HashSet<>();
 
     @Override
     public int hashCode() {
@@ -43,9 +49,5 @@ public class Film {
         }
         Film other = (Film) obj;
         return id == other.id;
-    }
-
-    public static Integer getFilmsLikes(Film film) {
-        return film.getIdUsersWhoLikedFilm().size();
     }
 }
