@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Service
 @RequiredArgsConstructor
+@Service
 public class UserService {  // добавление в друзья, удаление из друзей, вывод списка общих друзей.
     private final UserStorage userStorage;
     private final FriendStorage friendStorage;

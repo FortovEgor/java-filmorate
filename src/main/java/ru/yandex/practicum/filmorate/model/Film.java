@@ -13,12 +13,8 @@ import java.time.LocalDate;
 /**
  * Film.
  */
-@Getter
-@Setter
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class Film {
     private int id;
     @NotBlank(message = "Введите название фильма.")

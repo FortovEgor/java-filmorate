@@ -7,12 +7,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@Getter
-@Setter
-@Builder
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Builder
 public class User {
     private int id;
     @NotBlank(message = "Электронная почта не может быть пустой.")

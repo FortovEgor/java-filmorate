@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Service
 @RequiredArgsConstructor
+@Service
 public class FilmService {  // добавление и удаление лайка, вывод 10 наиболее популярных фильмов по количеству лайков.
     private final FilmStorage filmStorage;
     private final MpaRatingStorage mpaStorage;
