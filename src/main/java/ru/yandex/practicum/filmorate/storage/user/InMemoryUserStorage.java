@@ -59,9 +59,10 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     public List<User> getCommonFriends(Integer user, Integer friend) {
-        return getUserFriends(user).stream()
-                .filter(getUserFriends(friend)::contains)
-                .collect(Collectors.toList());
+//        return getUserFriends(user).stream()
+//                .filter(getUserFriends(friend)::contains)
+//                .collect(Collectors.toList());
+        return null;  // temp solution for this sprint
     }
 
     @Override

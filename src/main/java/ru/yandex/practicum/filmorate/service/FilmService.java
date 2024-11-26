@@ -65,9 +65,16 @@ public class FilmService {  // добавление и удаление лайк
     }
 
     public void addLike(Integer filmId, Integer userId) {
-        if (!userStorage.getUsers().containsKey(userId)) {
-            throw new NotFoundException(String.format("User with id=%dno found", userId));
+//        if (!userStorage.getUsers().containsKey(userId)) {
+//            throw new NotFoundException(String.format("User with id=%dno found", userId));
+//        }
+        if (userStorage.findUserById(userId) == null) {
+            throw new NotFoundException("Пользователь не найден.");
         }
+        if (filmStorage.get(filmId) == null ) {
+            throw new NotFoundException("Фильм не найден.");
+        }
+        likeStorage.addLike(filmId, userId);
         checkId(filmId, userId);
         likeStorage.addLike(filmId, userId);
 //        findFilmById(filmId).getIdUsersWhoLikedFilm().add(userId);
@@ -83,8 +90,11 @@ public class FilmService {  // добавление и удаление лайк
     }
 
     public void removeLike(Integer filmId, Integer userId) {
-        if (!userStorage.getUsers().containsKey(userId)) {
+        if (userStorage.findUserById(userId) == null) {
             throw new NotFoundException(String.format("User with id=%dno found", userId));
+        }
+        if (filmStorage.get(filmId) == null) {
+            throw new NotFoundException("Фильм не найден.");
         }
         checkId(filmId, userId);
         likeStorage.removeLike(filmId, userId);
@@ -96,11 +106,13 @@ public class FilmService {  // добавление и удаление лайк
     }
 
     public List<Film> getTopFilmsByLikes(Integer count) {
-        if (filmStorage.isEmpty()) {
+        List<Film> films = filmStorage.getTopFilms(count);
+        if (films.isEmpty()) {
             throw new NotFoundException("Список фильмов пуст.");
         }
+        genreStorage.findAllGenresByFilm(films);
         log.debug("Топ {} фильмов успешно отобран.", count);
-        return filmStorage.getTopFilms(count);
+        return films;
     }
 
     public List<MpaRating> findAllMpa() {
@@ -112,16 +124,24 @@ public class FilmService {  // добавление и удаление лайк
     }
 
     public Film findFilmById(Integer id) {
+//
+//        if (!filmStorage.getFilms().containsKey(id)) {
+//            throw new NotFoundException(String.format("Фильм с запрашиваемым id=%d отсутствует. Кол-во фильмов: %s",
+//                    id, filmStorage.getFilms().keySet().stream().map(String::valueOf) // Преобразуем Long ключи в строки
+//                            .collect(Collectors.joining(", "))));
+//        }
+//
+//        return filmStorage.getFilms().get(id);
         if (id <= 0) {
             throw new NotValidIdException();
         }
-        if (!filmStorage.getFilms().containsKey(id)) {
-            throw new NotFoundException(String.format("Фильм с запрашиваемым id=%d отсутствует. Кол-во фильмов: %s",
-                    id, filmStorage.getFilms().keySet().stream().map(String::valueOf) // Преобразуем Long ключи в строки
-                            .collect(Collectors.joining(", "))));
+        Film film = filmStorage.get(id);
+        if (film == null) {
+            throw new NotFoundException("Фильм с запрашиваемым id отсутствует");
         }
+        genreStorage.findAllGenresByFilm(List.of(film));
         log.debug("Получен фильм с айди {}.", id);
-        return filmStorage.getFilms().get(id);
+        return film;
     }
 
     private void checkId(Integer filmId, Integer userId) {

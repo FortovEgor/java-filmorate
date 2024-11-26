@@ -46,7 +46,7 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
-    public void remove(int id) {
+    public void remove(int id) {  // not used
         // @TODO: implement
     }
 

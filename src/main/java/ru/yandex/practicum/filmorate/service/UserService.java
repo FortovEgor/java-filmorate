@@ -29,13 +29,20 @@ public class UserService {  // добавление в друзья, удале�
         if (id <= 0) {
             throw new NotValidIdException();
         }
-        if (!userStorage.getUsers().containsKey(id)) {
-            throw new NotFoundException(String.format("Фильм с запрашиваемым id=%d отсутствует. Кол-во фильмов: %s",
-                    id, userStorage.getUsers().keySet().stream().map(String::valueOf) // Преобразуем Long ключи в строки
-                            .collect(Collectors.joining(", "))));
+//        if (!userStorage.getUsers().containsKey(id)) {
+//            throw new NotFoundException(String.format("Фильм с запрашиваемым id=%d отсутствует. Кол-во фильмов: %s",
+//                    id, userStorage.getUsers().keySet().stream().map(String::valueOf) // Преобразуем Long ключи в строки
+//                            .collect(Collectors.joining(", "))));
+//        }
+//
+//        return userStorage.getUsers().get(id);
+
+        User possibleUser = userStorage.findUserById(id);
+        if (possibleUser == null) {
+            throw new NotFoundException("Пользователь не найден");
         }
         log.debug("Получен фильм с айди {}.", id);
-        return userStorage.getUsers().get(id);
+        return possibleUser;
     }
 
     public List<User> findAllFriends(int id) {
@@ -99,8 +106,8 @@ public class UserService {  // добавление в друзья, удале�
 
     public List<User> getCommonFriends(Integer user, Integer friend) {
         checkId(user, friend);
-        log.debug("Найдены общие друзья пользователей c id {} и {}.", user, friend);
-        return userStorage.getCommonFriends(user, friend);
+        return friendStorage.findCommonFriends(user, friend);
+//        log.debug("Найдены общие друзья пользователей c id {} и {}.", user, friend);
     }
 
     private void checkId(Integer user, Integer friend) {

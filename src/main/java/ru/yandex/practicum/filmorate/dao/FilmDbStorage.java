@@ -67,13 +67,13 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
-    public Map<Integer, Film> getFilms() {
+    public Map<Integer, Film> getFilms() {  // not used
         // @TODO: implement
         return null;
     }
 
     @Override
-    public boolean isEmpty() {
+    public boolean isEmpty() {  // not used
         // @TODO: implement
         return false;
     }
