@@ -41,7 +41,9 @@ public class UserDbStorage implements UserStorage {
     @Override
     public User update(User user) {
         String sql = "UPDATE users SET email = ?, login = ?, name = ?, birthday = ? WHERE user_id = ?";
-        jdbcTemplate.update(sql, user.getEmail(), user.getLogin(), user.getName(), user.getBirthday(), user.getId());
+        final int res = jdbcTemplate.update(sql, user.getEmail(), user.getLogin(), user.getName(),
+                user.getBirthday(), user.getId());
+//        return (res == 0) ? null : user;
         return user;
     }
 

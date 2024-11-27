@@ -43,7 +43,9 @@ public class UserService {  // добавление в друзья, удале�
     }
 
     public List<User> findAllFriends(int id) {
-        return friendStorage.findAllFriends(id);
+        List<User> friends = friendStorage.findAllFriends(id);
+        User possibleUser = findUserById(id);  // check that user with current id exists
+        return friends;
     }
 
     public final Collection<User> getAllUsers() {
@@ -57,7 +59,11 @@ public class UserService {  // добавление в друзья, удале�
 
     public User updateUser(User user) throws ValidationException {
         validateUser(user);
-        return userStorage.update(user);
+        User newUser = userStorage.update(user);
+//        if (newUser == null) {
+//            throw new NotFoundException("Пользователь не найден!");
+//        }
+        return newUser;
     }
 
     public final void validateUser(User user) throws ValidationException {
