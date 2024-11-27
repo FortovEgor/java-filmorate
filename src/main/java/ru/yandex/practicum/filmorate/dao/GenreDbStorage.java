@@ -37,7 +37,7 @@ public class GenreDbStorage implements GenreStorage {
     @Override
     public void findAllGenresByFilm(List<Film> films) {
         final Map<Integer, Film> filmById = films.stream().collect(Collectors.toMap(Film::getId, identity()));
-        String sql = "SELECT * FROM GENRES g, film_genres fg WHERE fg.genre_id = g.genre_id AND fg.film_id IN (%s)";
+        String sql = "SELECT * FROM GENRES g, films_genres fg WHERE fg.genre_id = g.genre_id AND fg.film_id IN (%s)";
         String inSql = String.join(",", Collections.nCopies(films.size(), "?"));
         jdbcTemplate.query(String.format(sql, inSql),
                 filmById.keySet().toArray(),

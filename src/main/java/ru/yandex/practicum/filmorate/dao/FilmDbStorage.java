@@ -25,7 +25,7 @@ public class FilmDbStorage implements FilmStorage {
     private static final String SELECT_FILMS = "SELECT f.film_id, f.name, f.description, f.releaseDate, f.duration, " +
             "mpa.rating_id, mpa.name AS mpa_name " +
             "FROM films AS f " +
-            "INNER JOIN mpa_rating AS mpa ON f.rating_id = mpa.rating_id ";
+            "INNER JOIN mpa_ratings AS mpa ON f.rating_id = mpa.rating_id ";
 
     @Override
     public Film create(Film film) {
@@ -108,7 +108,7 @@ public class FilmDbStorage implements FilmStorage {
     private List<Genre> findGenresByFilmId(int filmId) {
         String sql = "select G.* " +
                 "     from genres G " +
-                "     join film_genres FG on G.genre_id = FG.genre_id where FG.film_id=?";
+                "     join films_genres FG on G.genre_id = FG.genre_id where FG.film_id=?";
         return jdbcTemplate.query(sql,
                 (ResultSet rs, int rowNum) -> Genre.builder()
                         .id(rs.getInt(1))
@@ -118,9 +118,9 @@ public class FilmDbStorage implements FilmStorage {
 
 
     private void updateGenres(Set<Genre> genres, int id) {
-        jdbcTemplate.update("DELETE FROM film_genres WHERE film_id = ?", id);
+        jdbcTemplate.update("DELETE FROM films_genres WHERE film_id = ?", id);
         if (genres != null && genres.size() > 0) {
-            String sql = "INSERT INTO film_genres (film_id, genre_id) VALUES (?, ?)";
+            String sql = "INSERT INTO films_genres (film_id, genre_id) VALUES (?, ?)";
             Genre[] g = genres.toArray(new Genre[genres.size()]);
             jdbcTemplate.batchUpdate(
                     sql,

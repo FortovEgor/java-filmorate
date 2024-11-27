@@ -17,20 +17,20 @@ public class FriendDbStorage implements FriendStorage {
 
     @Override
     public void addFriend(int id, int friendId) {
-        String sql = "INSERT INTO friendship(user_id, friend_id) VALUES (?,?)";
+        String sql = "INSERT INTO friends(user_id, friend_id) VALUES (?,?)";
         jdbcTemplate.update(sql, id, friendId);
     }
 
     @Override
     public void removeFriend(int id, int friendId) {
-        String sql = "DELETE FROM friendship WHERE user_id=? AND friend_id=?";
+        String sql = "DELETE FROM friends WHERE user_id=? AND friend_id=?";
         jdbcTemplate.update(sql, id, friendId);
     }
 
     @Override
     public List<User> findAllFriends(int id) {
         String sql = "SELECT u.user_id, u.email, u.login, u.name, u.birthday " +
-                "FROM friendship AS f " +
+                "FROM friends AS f " +
                 "INNER JOIN users AS u ON u.user_id = f.friend_id " +
                 "WHERE f.user_id = ? " +
                 "ORDER BY u.user_id";
@@ -40,8 +40,8 @@ public class FriendDbStorage implements FriendStorage {
     @Override
     public List<User> findCommonFriends(int id, int otherId) {
         String sql = "SELECT u.user_id, u.email, u.login, u.name, u.birthday " +
-                "FROM friendship AS f " +
-                "INNER JOIN friendship fr ON fr.friend_id = f.friend_id " +
+                "FROM friends AS f " +
+                "INNER JOIN friends fr ON fr.friend_id = f.friend_id " +
                 "INNER JOIN users u ON u.user_id = fr.friend_id " +
                 "WHERE f.user_id = ? AND fr.user_id = ? " +
                 "AND f.friend_id <> fr.user_id AND fr.friend_id <> f.user_id";

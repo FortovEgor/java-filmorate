@@ -18,13 +18,13 @@ public class MpaRatingDbStorage implements MpaRatingStorage {
 
     @Override
     public List<MpaRating> findAllMpa() {
-        String sql = "SELECT * FROM mpa_rating";
+        String sql = "SELECT * FROM mpa_ratings";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeMpaRating(rs));
     }
 
     @Override
     public Optional<MpaRating> findMpaById(int id) {
-        String sql = "SELECT * FROM mpa_rating where rating_id = ?";
+        String sql = "SELECT * FROM mpa_ratings where rating_id = ?";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeMpaRating(rs), id).stream().findFirst();
     }
 
