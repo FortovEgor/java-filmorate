@@ -30,14 +30,14 @@ public class GenreDbStorage implements GenreStorage {
 
     @Override
     public Optional<Genre> findGenreById(int id) {
-        String sql = "SELECT * FROM genres WHERE genre_id = ?";
+        String sql = "SELECT * FROM genres WHERE id = ?";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeGenre(rs), id).stream().findFirst();
     }
 
     @Override
     public void findAllGenresByFilm(List<Film> films) {
         final Map<Integer, Film> filmById = films.stream().collect(Collectors.toMap(Film::getId, identity()));
-        String sql = "SELECT * FROM GENRES g, films_genres fg WHERE fg.genre_id = g.genre_id AND fg.film_id IN (%s)";
+        String sql = "SELECT * FROM GENRES g, films_genres fg WHERE fg.genre_id = g.id AND fg.film_id IN (%s)";
         String inSql = String.join(",", Collections.nCopies(films.size(), "?"));
         jdbcTemplate.query(String.format(sql, inSql),
                 filmById.keySet().toArray(),
@@ -45,7 +45,7 @@ public class GenreDbStorage implements GenreStorage {
     }
 
     private Genre makeGenre(ResultSet rs) throws SQLException {
-        int id = rs.getInt("genre_id");
+        int id = rs.getInt("id");
         String name = rs.getString("name");
         return new Genre(id, name);
     }

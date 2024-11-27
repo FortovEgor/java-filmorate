@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS likes(
     );
 
 CREATE TABLE IF NOT EXISTS genres(
-                                     genre_id INT AUTO_INCREMENT PRIMARY KEY,
+                                     id INT AUTO_INCREMENT PRIMARY KEY,
                                      name     VARCHAR(255)
     );
 
@@ -57,6 +57,6 @@ CREATE TABLE IF NOT EXISTS films_genres(
                                           film_id  INT,
                                           genre_id INT,
                                           FOREIGN KEY(film_id) REFERENCES films(film_id),
-    FOREIGN KEY(genre_id) REFERENCES genres(genre_id)
+    FOREIGN KEY(genre_id) REFERENCES genres(id)
     );
 

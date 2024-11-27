@@ -10,7 +10,7 @@ values (1, 'G'),
        (4, 'R'),
        (5, 'NC-17');
 
-insert into genres(genre_id, name)
+insert into genres(id, name)
 values (1, 'Комедия'),
        (2, 'Драма'),
        (3, 'Мультфильм'),
