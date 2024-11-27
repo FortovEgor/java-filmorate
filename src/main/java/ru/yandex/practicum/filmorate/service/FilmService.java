@@ -17,6 +17,7 @@ import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 @Slf4j
@@ -35,10 +36,23 @@ public class FilmService {  // добавление и удаление лайк
 
     public Film createFilm(Film film) throws ValidationException {
         validateFilm(film);
+        if (mpaStorage.findMpaById(film.getMpa().getId()).isEmpty()) {
+            throw new NotFoundException("No such MPA rating!");
+        }
+        LinkedHashSet<Genre> filmGenres = film.getGenres();
+        for (Genre genre : filmGenres) {
+            if (genreStorage.findGenreById(genre.getId()).isEmpty()) {
+                throw new ValidationException("No such genre!");
+            }
+        }
+
         return filmStorage.create(film);
     }
 
     public Film updateFilm(Film film) throws ValidationException {
+        if (filmStorage.get(film.getId()) == null) {
+            throw new NotFoundException("No film with such id!");
+        }
         return filmStorage.update(film);
     }
 
