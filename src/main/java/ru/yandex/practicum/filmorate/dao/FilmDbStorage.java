@@ -15,10 +15,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Repository
@@ -96,6 +93,7 @@ public class FilmDbStorage implements FilmStorage {
 
     private Film makeFilm(ResultSet rs) throws SQLException {
         Integer id = rs.getInt("film_id");
+//        Integer
         Film film = Film.builder()
                 .id(id)
                 .name(rs.getString("name"))
@@ -103,6 +101,7 @@ public class FilmDbStorage implements FilmStorage {
                 .releaseDate(rs.getDate("releaseDate").toLocalDate())
                 .duration(rs.getInt("duration"))
                 .mpa(new MpaRating(rs.getInt("rating_id"), rs.getString("mpa_name")))
+                .genres(new LinkedHashSet<>())  // @TODO: implement
                 .build();
         return film;
     }

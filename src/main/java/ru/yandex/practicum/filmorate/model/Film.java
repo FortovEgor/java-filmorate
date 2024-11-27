@@ -28,7 +28,7 @@ public class Film {
     private Integer duration;
     @NonNull
     private MpaRating mpa;
-    private final LinkedHashSet<Genre> genres = new LinkedHashSet<>();
+    private LinkedHashSet<Genre> genres = new LinkedHashSet<>();
 
     @Override
     public int hashCode() {
