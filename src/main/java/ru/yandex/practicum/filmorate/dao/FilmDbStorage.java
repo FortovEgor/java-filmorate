@@ -93,7 +93,6 @@ public class FilmDbStorage implements FilmStorage {
 
     private Film makeFilm(ResultSet rs) throws SQLException {
         Integer id = rs.getInt("film_id");
-//        Integer
         Film film = Film.builder()
                 .id(id)
                 .name(rs.getString("name"))
@@ -101,10 +100,22 @@ public class FilmDbStorage implements FilmStorage {
                 .releaseDate(rs.getDate("releaseDate").toLocalDate())
                 .duration(rs.getInt("duration"))
                 .mpa(new MpaRating(rs.getInt("rating_id"), rs.getString("mpa_name")))
-                .genres(new LinkedHashSet<>())  // @TODO: implement
+                .genres(new LinkedHashSet<>(findGenresByFilmId(id)))
                 .build();
         return film;
     }
+
+    private List<Genre> findGenresByFilmId(int filmId) {
+        String sql = "select G.* " +
+                "     from genres G " +
+                "     join film_genres FG on G.genre_id = FG.genre_id where FG.film_id=?";
+        return jdbcTemplate.query(sql,
+                (ResultSet rs, int rowNum) -> Genre.builder()
+                        .id(rs.getInt(1))
+                        .name(rs.getString(2))
+                        .build(), filmId);
+    }
+
 
     private void updateGenres(Set<Genre> genres, int id) {
         jdbcTemplate.update("DELETE FROM film_genres WHERE film_id = ?", id);
