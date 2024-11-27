@@ -97,7 +97,7 @@ public class FilmService {  // добавление и удаление лайк
     }
 
     public Genre findGenreById(int id) {
-        return genreStorage.findGenreById(id).orElseThrow(() -> new RuntimeException("Жанр не найден."));
+        return genreStorage.findGenreById(id).orElseThrow(() -> new NotFoundException("Жанр не найден."));
     }
 
     public void removeLike(Integer filmId, Integer userId) {
@@ -131,7 +131,7 @@ public class FilmService {  // добавление и удаление лайк
     }
 
     public MpaRating findMpaById(int id) {
-        return mpaStorage.findMpaById(id).orElseThrow(() -> new RuntimeException("Рейтинг MPA не найден."));
+        return mpaStorage.findMpaById(id).orElseThrow(() -> new NotFoundException("Рейтинг MPA не найден."));
     }
 
     public Film findFilmById(Integer id) {
