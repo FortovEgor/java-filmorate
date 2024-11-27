@@ -15,7 +15,7 @@ public interface FilmStorage {
 
     Film get(int id);
 
-    Collection<Film> getAll();
+    List<Film> getAll();
 
     Map<Integer, Film> getFilms();
 

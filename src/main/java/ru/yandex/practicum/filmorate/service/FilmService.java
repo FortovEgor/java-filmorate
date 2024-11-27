@@ -16,6 +16,7 @@ import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -30,7 +31,9 @@ public class FilmService {  // добавление и удаление лайк
     private final LikeStorage likeStorage;
     private final UserStorage userStorage;
 
-    public Collection<Film> getAllFilms() {
+    public List<Film> getAllFilms() {
+//        List<Film> films = new ArrayList<>();
+//        return films;
         return filmStorage.getAll();
     }
 
@@ -82,10 +85,9 @@ public class FilmService {  // добавление и удаление лайк
         if (userStorage.findUserById(userId) == null) {
             throw new NotFoundException("Пользователь не найден.");
         }
-        if (filmStorage.get(filmId) == null ) {
+        if (filmStorage.get(filmId) == null) {
             throw new NotFoundException("Фильм не найден.");
         }
-        likeStorage.addLike(filmId, userId);
         checkId(filmId, userId);
         likeStorage.addLike(filmId, userId);
 //        findFilmById(filmId).getIdUsersWhoLikedFilm().add(userId);

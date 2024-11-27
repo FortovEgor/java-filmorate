@@ -19,7 +19,7 @@ public class FilmController {
     private final FilmService filmService;
 
     @GetMapping
-    public final Collection<Film> findAll() {
+    public List<Film> findAll() {
         return filmService.getAllFilms();
     }
 
