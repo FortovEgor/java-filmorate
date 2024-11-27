@@ -59,6 +59,10 @@ public class UserService {  // добавление в друзья, удале�
 
     public User updateUser(User user) throws ValidationException {
         validateUser(user);
+
+        if (userStorage.findUserById(user.getId()) == null) {
+            throw new NotFoundException("Пользователь не найден!");
+        }
         User newUser = userStorage.update(user);
 //        if (newUser == null) {
 //            throw new NotFoundException("Пользователь не найден!");
