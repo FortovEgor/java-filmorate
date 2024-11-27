@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS friends(
     );
 
 CREATE TABLE IF NOT EXISTS mpa_ratings(
-                                         rating_id INT AUTO_INCREMENT,
+                                         id INT AUTO_INCREMENT,
                                          name      VARCHAR(255)
     );
 

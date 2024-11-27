@@ -24,12 +24,12 @@ public class MpaRatingDbStorage implements MpaRatingStorage {
 
     @Override
     public Optional<MpaRating> findMpaById(int id) {
-        String sql = "SELECT * FROM mpa_ratings where rating_id = ?";
+        String sql = "SELECT * FROM mpa_ratings where id = ?";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeMpaRating(rs), id).stream().findFirst();
     }
 
     private MpaRating makeMpaRating(ResultSet rs) throws SQLException {
-        int id = rs.getInt("rating_id");
+        int id = rs.getInt("id");
         String name = rs.getString("name");
         return new MpaRating(id, name);
     }

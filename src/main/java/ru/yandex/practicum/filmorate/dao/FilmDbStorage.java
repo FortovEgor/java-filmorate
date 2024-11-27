@@ -23,9 +23,9 @@ public class FilmDbStorage implements FilmStorage {
     private final JdbcTemplate jdbcTemplate;
 
     private static final String SELECT_FILMS = "SELECT f.film_id, f.name, f.description, f.releaseDate, f.duration, " +
-            "mpa.rating_id, mpa.name AS mpa_name " +
+            "mpa.id, mpa.name AS mpa_name " +
             "FROM films AS f " +
-            "INNER JOIN mpa_ratings AS mpa ON f.rating_id = mpa.rating_id ";
+            "INNER JOIN mpa_ratings AS mpa ON f.rating_id = mpa.id ";
 
     @Override
     public Film create(Film film) {
@@ -99,7 +99,7 @@ public class FilmDbStorage implements FilmStorage {
                 .description(rs.getString("description"))
                 .releaseDate(rs.getDate("releaseDate").toLocalDate())
                 .duration(rs.getInt("duration"))
-                .mpa(new MpaRating(rs.getInt("rating_id"), rs.getString("mpa_name")))
+                .mpa(new MpaRating(rs.getInt("id"), rs.getString("mpa_name")))
                 .genres(new LinkedHashSet<>(findGenresByFilmId(id)))
                 .build();
         return film;

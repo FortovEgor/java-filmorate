@@ -3,7 +3,7 @@ from mpa_ratings;
 delete
 from genres;
 
-insert into mpa_ratings(rating_id, name)
+insert into mpa_ratings(id, name)
 values (1, 'G'),
        (2, 'PG'),
        (3, 'PG-13'),
