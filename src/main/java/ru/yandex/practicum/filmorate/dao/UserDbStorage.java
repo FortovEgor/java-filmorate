@@ -27,7 +27,7 @@ public class UserDbStorage implements UserStorage {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(
                 connection -> {
-                    PreparedStatement ps = connection.prepareStatement(sql, new String[]{"user_id"});
+                    PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
                     ps.setString(1, user.getEmail());
                     ps.setString(2, user.getLogin());
                     ps.setString(3, user.getName());
@@ -40,7 +40,7 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User update(User user) {
-        String sql = "UPDATE users SET email = ?, login = ?, name = ?, birthday = ? WHERE user_id = ?";
+        String sql = "UPDATE users SET email = ?, login = ?, name = ?, birthday = ? WHERE id = ?";
         final int res = jdbcTemplate.update(sql, user.getEmail(), user.getLogin(), user.getName(),
                 user.getBirthday(), user.getId());
         return user;
@@ -53,7 +53,7 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public List<User> getAll() {
-        String sql = "SELECT user_id, login, name, email, birthday FROM users";
+        String sql = "SELECT id, login, name, email, birthday FROM users";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeUser(rs));
     }
 
@@ -71,7 +71,7 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User findUserById(int id) {
-        String sql = "SELECT * FROM users WHERE user_id = ?";
+        String sql = "SELECT * FROM users WHERE id = ?";
         Optional<User> possibleUser = jdbcTemplate.query(sql, (rs, rowNum) -> makeUser(rs), id).stream().findFirst();
         return possibleUser.orElse(null);
     }
@@ -84,7 +84,7 @@ public class UserDbStorage implements UserStorage {
 
     private User makeUser(ResultSet rs) throws SQLException {
         return User.builder()
-                .id(rs.getInt("user_id"))
+                .id(rs.getInt("id"))
                 .email(rs.getString("email"))
                 .login(rs.getString("login"))
                 .name(rs.getString("name"))

@@ -29,20 +29,20 @@ public class FriendDbStorage implements FriendStorage {
 
     @Override
     public List<User> findAllFriends(int id) {
-        String sql = "SELECT u.user_id, u.email, u.login, u.name, u.birthday " +
+        String sql = "SELECT u.id, u.email, u.login, u.name, u.birthday " +
                 "FROM friends AS f " +
-                "INNER JOIN users AS u ON u.user_id = f.friend_id " +
+                "INNER JOIN users AS u ON u.id = f.friend_id " +
                 "WHERE f.user_id = ? " +
-                "ORDER BY u.user_id";
+                "ORDER BY u.id";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeFriend(rs), id);
     }
 
     @Override
     public List<User> findCommonFriends(int id, int otherId) {
-        String sql = "SELECT u.user_id, u.email, u.login, u.name, u.birthday " +
+        String sql = "SELECT u.id, u.email, u.login, u.name, u.birthday " +
                 "FROM friends AS f " +
                 "INNER JOIN friends fr ON fr.friend_id = f.friend_id " +
-                "INNER JOIN users u ON u.user_id = fr.friend_id " +
+                "INNER JOIN users u ON u.id = fr.friend_id " +
                 "WHERE f.user_id = ? AND fr.user_id = ? " +
                 "AND f.friend_id <> fr.user_id AND fr.friend_id <> f.user_id";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeFriend(rs), id, otherId);
@@ -50,7 +50,7 @@ public class FriendDbStorage implements FriendStorage {
 
     private User makeFriend(ResultSet rs) throws SQLException {
         return User.builder()
-                .id(rs.getInt("user_id"))
+                .id(rs.getInt("id"))
                 .email(rs.getString("email"))
                 .login(rs.getString("login"))
                 .name(rs.getString("name"))
