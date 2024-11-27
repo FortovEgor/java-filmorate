@@ -37,7 +37,7 @@ public class FilmService {  // добавление и удаление лайк
     public Film createFilm(Film film) throws ValidationException {
         validateFilm(film);
         if (mpaStorage.findMpaById(film.getMpa().getId()).isEmpty()) {
-            throw new NotFoundException("No such MPA rating!");
+            throw new ValidationException("No such MPA rating!");
         }
         LinkedHashSet<Genre> filmGenres = film.getGenres();
         for (Genre genre : filmGenres) {
