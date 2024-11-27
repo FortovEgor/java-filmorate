@@ -43,11 +43,14 @@ public class FilmService {  // добавление и удаление лайк
             throw new ValidationException("No such MPA rating!");
         }
         LinkedHashSet<Genre> filmGenres = film.getGenres();
-        for (Genre genre : filmGenres) {
-            if (genreStorage.findGenreById(genre.getId()).isEmpty()) {
-                throw new ValidationException("No such genre!");
+        if (filmGenres != null) {
+            for (Genre genre : filmGenres) {
+                if (genreStorage.findGenreById(genre.getId()).isEmpty()) {
+                    throw new ValidationException("No such genre!");
+                }
             }
         }
+
 
         return filmStorage.create(film);
     }
