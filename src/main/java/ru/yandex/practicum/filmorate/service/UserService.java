@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,13 +25,6 @@ public class UserService {  // добавление в друзья, удале�
         if (id <= 0) {
             throw new NotValidIdException();
         }
-//        if (!userStorage.getUsers().containsKey(id)) {
-//            throw new NotFoundException(String.format("Фильм с запрашиваемым id=%d отсутствует. Кол-во фильмов: %s",
-//                    id, userStorage.getUsers().keySet().stream().map(String::valueOf) // Преобразуем Long ключи в строки
-//                            .collect(Collectors.joining(", "))));
-//        }
-//
-//        return userStorage.getUsers().get(id);
 
         User possibleUser = userStorage.findUserById(id);
         if (possibleUser == null) {
@@ -64,9 +56,6 @@ public class UserService {  // добавление в друзья, удале�
             throw new NotFoundException("Пользователь не найден!");
         }
         User newUser = userStorage.update(user);
-//        if (newUser == null) {
-//            throw new NotFoundException("Пользователь не найден!");
-//        }
         return newUser;
     }
 
@@ -93,17 +82,6 @@ public class UserService {  // добавление в друзья, удале�
 
     public void removeFriend(Integer user, Integer friend) {
         checkId(user, friend);
-//        if (userStorage.getUserFriends(user).isEmpty()) {
-//            log.debug("Список друзей пользователя c id {}  пуст.", user);
-//            return;
-//        }
-//        if (!userStorage.findUserById(user).getFriends().contains(friend)) {
-//            throw new NotFoundException(userStorage.findUserById(friend));
-//        }
-//        userStorage.findUserById(user).getFriends().remove(friend);
-//        userStorage.findUserById(friend).getFriends().remove(user);
-
-
         if (userStorage.findUserById(user) == null || userStorage.findUserById(friend) == null) {
             throw new NotFoundException("Пользователь не найден.");
         }

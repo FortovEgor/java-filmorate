@@ -16,8 +16,6 @@ import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -32,8 +30,6 @@ public class FilmService {  // добавление и удаление лайк
     private final UserStorage userStorage;
 
     public List<Film> getAllFilms() {
-//        List<Film> films = new ArrayList<>();
-//        return films;
         return filmStorage.getAll();
     }
 
@@ -82,19 +78,15 @@ public class FilmService {  // добавление и удаление лайк
     }
 
     public void addLike(Integer filmId, Integer userId) {
-//        if (!userStorage.getUsers().containsKey(userId)) {
-//            throw new NotFoundException(String.format("User with id=%dno found", userId));
-//        }
         if (userStorage.findUserById(userId) == null) {
-            throw new NotFoundException("Пользователь не найден.");
+            throw new NotFoundException(String.format("Пользователь с id=%d не найден.", userId));
         }
         if (filmStorage.get(filmId) == null) {
             throw new NotFoundException("Фильм не найден.");
         }
         checkId(filmId, userId);
         likeStorage.addLike(filmId, userId);
-//        findFilmById(filmId).getIdUsersWhoLikedFilm().add(userId);
-//        log.debug("Пользователь c id {} поставил лайк фильму с айди {}.", userId, filmId);
+        log.debug("Пользователь c id {} поставил лайк фильму с айди {}.", userId, filmId);
     }
 
     public List<Genre> findAllGenres() {
@@ -114,11 +106,7 @@ public class FilmService {  // добавление и удаление лайк
         }
         checkId(filmId, userId);
         likeStorage.removeLike(filmId, userId);
-//        if (findFilmById(filmId).getIdUsersWhoLikedFilm().isEmpty()) {
-//            throw new NotFoundException("Список фильмов пуст.");
-//        }
-//        findFilmById(filmId).getIdUsersWhoLikedFilm().remove(userId);
-//        log.debug("Пользователь c id {} удалил лайк фильму с айди {}.", userId, filmId);
+        log.debug("Пользователь c id {} удалил лайк фильму с айди {}.", userId, filmId);
     }
 
     public List<Film> getTopFilmsByLikes(Integer count) {
@@ -140,14 +128,6 @@ public class FilmService {  // добавление и удаление лайк
     }
 
     public Film findFilmById(Integer id) {
-//
-//        if (!filmStorage.getFilms().containsKey(id)) {
-//            throw new NotFoundException(String.format("Фильм с запрашиваемым id=%d отсутствует. Кол-во фильмов: %s",
-//                    id, filmStorage.getFilms().keySet().stream().map(String::valueOf) // Преобразуем Long ключи в строки
-//                            .collect(Collectors.joining(", "))));
-//        }
-//
-//        return filmStorage.getFilms().get(id);
         if (id <= 0) {
             throw new NotValidIdException();
         }
