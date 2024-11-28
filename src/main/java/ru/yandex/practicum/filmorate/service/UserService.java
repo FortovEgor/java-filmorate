@@ -30,7 +30,7 @@ public class UserService {  // добавление в друзья, удале�
         if (possibleUser == null) {
             throw new NotFoundException("Пользователь не найден");
         }
-        log.debug("Получен фильм с айди {}.", id);
+        log.info("Получен фильм с айди {}.", id);
         return possibleUser;
     }
 
@@ -77,7 +77,7 @@ public class UserService {  // добавление в друзья, удале�
         }
         checkId(user, friend);
         friendStorage.addFriend(user, friend);
-        log.debug("Пользатели c id {} и {} друзья.", user, friend);
+        log.info("Пользатели c id {} и {} друзья.", user, friend);
     }
 
     public void removeFriend(Integer user, Integer friend) {
@@ -86,7 +86,7 @@ public class UserService {  // добавление в друзья, удале�
             throw new NotFoundException("Пользователь не найден.");
         }
         friendStorage.removeFriend(user, friend);
-        log.debug("Пользатели c id {} и {} удалены из друзей друг друга.", user, friend);
+        log.info("Пользатели c id {} и {} удалены из друзей друг друга.", user, friend);
     }
 
     public List<User> getCommonFriends(Integer user, Integer friend) {
