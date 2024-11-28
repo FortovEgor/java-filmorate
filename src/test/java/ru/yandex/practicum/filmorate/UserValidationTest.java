@@ -28,14 +28,14 @@ class UserValidationTest {
     void emailMustBeCorrect() {
         user = User.builder()
                 .id(1)
-                .email("whattt.tututu")
+                .email("whattt.@tututu")
                 .login("mock")
                 .name("mock")
                 .birthday(LocalDate.of(2003, 12, 12))
                 .build();
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         assertEquals(1, violations.size());
-        assertEquals("Электронная почта не может быть пустой и должна содержать символ @.", violations.iterator().next().getMessage());
+        assertEquals("Электронная почта должна содержать символ @.", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -49,7 +49,7 @@ class UserValidationTest {
                 .build();
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         assertEquals(1, violations.size());
-        assertEquals("Логин не может быть пустым и содержать пробелы.",
+        assertEquals("Логин не может быть пустым.",
                 violations.iterator().next().getMessage());
     }
 
@@ -64,7 +64,7 @@ class UserValidationTest {
                 .build();
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         assertEquals(1, violations.size());
-        assertEquals("Логин не может быть пустым и содержать пробелы.",
+        assertEquals("Логин не может содержать пробелы.",
                 violations.iterator().next().getMessage());
     }
 
@@ -79,7 +79,7 @@ class UserValidationTest {
                 .build();
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         assertEquals(1, violations.size());
-        assertEquals("Логин не может быть пустым и содержать пробелы.",
+        assertEquals("Логин не может содержать пробелы.",
                 violations.iterator().next().getMessage());
     }
 
@@ -94,7 +94,7 @@ class UserValidationTest {
                 .build();
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         assertEquals(1, violations.size());
-        assertEquals("Логин не может быть пустым и содержать пробелы.",
+        assertEquals("Логин не может содержать пробелы.",
                 violations.iterator().next().getMessage());
     }
 
