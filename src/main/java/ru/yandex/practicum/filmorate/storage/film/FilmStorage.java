@@ -4,7 +4,6 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.List;
-import java.util.Map;
 
 public interface FilmStorage {
     // методы добавления, удаления и модификации объектов
