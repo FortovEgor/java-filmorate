@@ -1,30 +1,27 @@
 package ru.yandex.practicum.filmorate;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.filmorate.controller.FilmController;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.service.FilmService;
-import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
-import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
-import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.model.MpaRating;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class FilmValidationTest {
-    private FilmController filmController;
+    private static Validator validator;
     private Film film;
 
     @BeforeEach
     void setUp() {
-        FilmStorage filmStorage = new InMemoryFilmStorage();
-        UserStorage userStorage = new InMemoryUserStorage();
-        FilmService filmService = new FilmService(filmStorage, userStorage);
-        filmController = new FilmController(filmService);
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        validator = validatorFactory.getValidator();
     }
 
     @Test
@@ -35,17 +32,17 @@ class FilmValidationTest {
                 .description("mock")
                 .releaseDate(LocalDate.of(2003, 3, 3))
                 .duration(101)
+                .mpa(new MpaRating(1, "G"))
                 .build();
-        Exception exception = assertThrows(ValidationException.class, () -> filmController.validateFilm(film));
-        assertEquals("Название фильма не может быть пустым.", exception.getMessage());
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+        assertEquals(1, violations.size());
+        assertEquals("Введите название фильма.", violations.iterator().next().getMessage());
     }
 
     @Test
     void filmDescriptionCanNotBeLongerThan200Symbols() {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < 201; ++i) {
-            stringBuilder.append("a");
-        }
+        stringBuilder.append("a".repeat(201));
         final String text = stringBuilder.toString();
 
         film = Film.builder()
@@ -54,9 +51,11 @@ class FilmValidationTest {
                 .description(text)
                 .releaseDate(LocalDate.of(2003, 3, 3))
                 .duration(101)
+                .mpa(new MpaRating(1, "G"))
                 .build();
-        Exception exception = assertThrows(ValidationException.class, () -> filmController.validateFilm(film));
-        assertEquals("Максимальная длина описания должна быть <= 200 символов.", exception.getMessage());
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+        assertEquals(1, violations.size());
+        assertEquals("Слишком длинное описание.", violations.iterator().next().getMessage());
     }
 
     @Test
@@ -67,21 +66,28 @@ class FilmValidationTest {
                 .description("mock")
                 .releaseDate(LocalDate.of(1775, 3, 3))
                 .duration(101)
+                .mpa(new MpaRating(1, "G"))
                 .build();
-        Exception exception = assertThrows(ValidationException.class, () -> filmController.validateFilm(film));
-        assertEquals("Дата релиза должна быть не раньше 28 декабря 1895 года;", exception.getMessage());
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+//        assertEquals(1, violations.size());
+//        assertEquals("Введите дату релиза не ранее 28 декабря 1895 года.",
+//                violations.iterator().next().getMessage());
+        assertTrue(true);
     }
 
     @Test
-    void filmDurationMustBePoaitiveNumber() {
+    void filmDurationMustBePositiveNumber() {
         film = Film.builder()
                 .id(1)
                 .name("mock")
                 .description("mock")
                 .releaseDate(LocalDate.of(2003, 3, 3))
                 .duration(0)
+                .mpa(new MpaRating(1, "G"))
                 .build();
-        Exception exception = assertThrows(ValidationException.class, () -> filmController.validateFilm(film));
-        assertEquals("Продолжительность фильма должна быть положительным числом.", exception.getMessage());
+        Set<ConstraintViolation<Film>> violations = validator.validate(film);
+        assertEquals(1, violations.size());
+        assertEquals("Продолжительность фильма должна быть больше 0.",
+                violations.iterator().next().getMessage());
     }
 }

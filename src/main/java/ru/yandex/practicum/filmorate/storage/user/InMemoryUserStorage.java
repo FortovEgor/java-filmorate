@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.storage.user;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.NotValidIdException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
@@ -9,9 +8,8 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
-@Component
+//@Component  // @TODO: uncomment this for Spring to use this Impl
 @Slf4j
 public class InMemoryUserStorage implements UserStorage {
     private int generatorId = 0;
@@ -43,7 +41,6 @@ public class InMemoryUserStorage implements UserStorage {
         return user;
     }
 
-    @Override
     public void remove(int id) {
 
     }
@@ -53,23 +50,23 @@ public class InMemoryUserStorage implements UserStorage {
         return new ArrayList<>(users.values());
     }
 
-    @Override
     public Map<Integer, User> getUsers() {
         return users;
     }
 
     public List<User> getCommonFriends(Integer user, Integer friend) {
-        return getUserFriends(user).stream()
-                .filter(getUserFriends(friend)::contains)
-                .collect(Collectors.toList());
+//        return getUserFriends(user).stream()
+//                .filter(getUserFriends(friend)::contains)
+//                .collect(Collectors.toList());
+        return null;  // temp solution for this sprint
     }
 
-    @Override
     public List<User> getUserFriends(Integer id) {
         if (id <= 0) {
             throw new NotValidIdException();
         }
-        Set<Integer> users = findUserById(id).getFriends();
+//        Set<Integer> users = findUserById(id).getFriends();  // @TODO: handle new code architecture
+        Set<Integer> users = new HashSet<>();
         List<User> usersFriends = new ArrayList<>();
 
         if (!users.isEmpty()) {
@@ -82,7 +79,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User findUserById(Integer id) {
+    public User findUserById(int id) {
         if (id <= 0) {
             throw new NotValidIdException();
         }

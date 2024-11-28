@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.storage.film;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -9,7 +8,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Component
+//@Component  // @TODO: uncomment this for Spring to use this Impl
 @Slf4j
 public class InMemoryFilmStorage implements FilmStorage {
     private final Map<Integer, Film> films = new HashMap<>();
@@ -41,26 +40,19 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public void remove(int id) {
-
-    }
-
-    @Override
-    public Film get(Integer id) {
+    public Film get(int id) {
         return films.get(id);
     }
 
     @Override
-    public Collection<Film> getAll() {
+    public List<Film> getAll() {
         return new ArrayList<>(films.values());
     }
 
-    @Override
     public Map<Integer, Film> getFilms() {  // @FIXME: unused?
         return films;
     }
 
-    @Override
     public boolean isEmpty() {
         return films.isEmpty();
     }
@@ -69,7 +61,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     public List<Film> getTopFilms(int count) {
         var films = new ArrayList<>(this.films.values());
         return films.stream()
-                .sorted(Comparator.comparing(Film::getFilmsLikes).reversed())
+//                .sorted(Comparator.comparing(Film::getFilmsLikes).reversed())
                 .limit(count)
                 .collect(Collectors.toList());
     }
