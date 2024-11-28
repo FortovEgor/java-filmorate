@@ -16,8 +16,10 @@ import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -41,8 +43,13 @@ public class FilmService {  // добавление и удаление лайк
         LinkedHashSet<Genre> filmGenres = film.getGenres();
         if (filmGenres != null) {
             List<Genre> allGenres = genreStorage.findAllGenres();
+            Set<Integer> allGenresIds = new HashSet<Integer>();
+            for (Genre genre : allGenres) {
+                allGenresIds.add(genre.getId());
+            }
+
             for (Genre genre : filmGenres) {
-                if (!allGenres.contains(genre)) {
+                if (!allGenresIds.contains(genre.getId())) {
                     throw new ValidationException("No such genre!");
                 }
             }
