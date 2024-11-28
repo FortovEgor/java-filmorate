@@ -41,7 +41,6 @@ public class InMemoryUserStorage implements UserStorage {
         return user;
     }
 
-    @Override
     public void remove(int id) {
 
     }
@@ -51,7 +50,6 @@ public class InMemoryUserStorage implements UserStorage {
         return new ArrayList<>(users.values());
     }
 
-    @Override
     public Map<Integer, User> getUsers() {
         return users;
     }
@@ -63,7 +61,6 @@ public class InMemoryUserStorage implements UserStorage {
         return null;  // temp solution for this sprint
     }
 
-    @Override
     public List<User> getUserFriends(Integer id) {
         if (id <= 0) {
             throw new NotValidIdException();

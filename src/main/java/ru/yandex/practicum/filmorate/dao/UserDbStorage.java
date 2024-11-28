@@ -13,7 +13,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -47,26 +46,9 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
-    public void remove(int id) {  // not used
-        // @TODO: implement
-    }
-
-    @Override
     public List<User> getAll() {
         String sql = "SELECT id, login, name, email, birthday FROM users";
         return jdbcTemplate.query(sql, (rs, rowNum) -> makeUser(rs));
-    }
-
-    @Override
-    public Map<Integer, User> getUsers() {
-        // @TODO: implement
-        return null;
-    }
-
-    @Override
-    public List<User> getUserFriends(Integer id) {
-        // @TODO: implement
-        return null;
     }
 
     @Override
@@ -74,12 +56,6 @@ public class UserDbStorage implements UserStorage {
         String sql = "SELECT * FROM users WHERE id = ?";
         Optional<User> possibleUser = jdbcTemplate.query(sql, (rs, rowNum) -> makeUser(rs), id).stream().findFirst();
         return possibleUser.orElse(null);
-    }
-
-    @Override
-    public List<User> getCommonFriends(Integer user, Integer friend) {
-        // @TODO: implement
-        return null;
     }
 
     private User makeUser(ResultSet rs) throws SQLException {

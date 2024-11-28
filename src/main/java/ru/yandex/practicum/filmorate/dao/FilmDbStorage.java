@@ -64,18 +64,6 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
-    public Map<Integer, Film> getFilms() {  // not used
-        // @TODO: implement
-        return null;
-    }
-
-    @Override
-    public boolean isEmpty() {  // not used
-        // @TODO: implement
-        return false;
-    }
-
-    @Override
     public Film get(int id) {
         String sql = "WHERE f.film_id = ?";
         Optional<Film> gotFilm = jdbcTemplate.query(SELECT_FILMS + sql, (rs, rowNum) -> makeFilm(rs), id).stream().findFirst();

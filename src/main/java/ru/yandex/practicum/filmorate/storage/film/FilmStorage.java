@@ -16,9 +16,5 @@ public interface FilmStorage {
 
     List<Film> getAll();
 
-    Map<Integer, Film> getFilms();
-
-    boolean isEmpty();
-
     List<Film> getTopFilms(int count);
 }
