@@ -40,8 +40,9 @@ public class FilmService {  // добавление и удаление лайк
         }
         LinkedHashSet<Genre> filmGenres = film.getGenres();
         if (filmGenres != null) {
+            List<Genre> allGenres = genreStorage.findAllGenres();
             for (Genre genre : filmGenres) {
-                if (genreStorage.findGenreById(genre.getId()).isEmpty()) {
+                if (!allGenres.contains(genre)) {
                     throw new ValidationException("No such genre!");
                 }
             }
